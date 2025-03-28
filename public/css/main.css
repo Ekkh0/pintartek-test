@@ -1,0 +1,9 @@
+iconify-icon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.table > tbody > th {
+    vertical-align: middle;
+}

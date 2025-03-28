@@ -1,0 +1,94 @@
+@extends('layouts.master')
+
+@section('title', 'CardiNote')
+
+@section('css')
+<link rel="stylesheet" href="css/main.css">
+@endsection
+
+@section('content')
+<div class="mainTable">
+    <a class="btn btn-primary mb-3" href="{{ route('createView') }}">
+        <div class="d-flex gap-2 align-items-center">
+            <iconify-icon icon="fa-solid:plus" style="font-size: 14px;"></iconify-icon>
+            Add Entry
+        </div>
+    </a>
+    <table class="table table-bordered">
+        <thead class="align-middle">
+            <form action="{{ route('mainView') }}" method="GET">
+                @csrf
+                <tr>
+                    <th scope="col">
+                        #
+                    </th>
+                    <th scope="col" style="width: 15%;">
+                        <div class="d-flex gap-2 align-items-center">
+                            Type
+                            <input type="text" name="filter" class="form-control" placeholder="Filter Type"
+                                value="{{ request('filter') }}">
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div class="d-flex align-items-center justify-content-between">
+                            Duration
+                            <span class="d-flex">
+                                <iconify-icon icon="fa-solid:arrow-up" style="font-size: 14px;"></iconify-icon>
+                                <iconify-icon icon="fa-solid:arrow-down" style="font-size: 14px;"></iconify-icon>
+                            </span>
+                        </div>
+                    </th>
+                    <th scope="col">
+                        Distance (Km)
+                    </th>
+                    <th scope="col">
+                        Pace (Min/Km)
+                    </th>
+                    <th scope="col">
+                        Date
+                    </th>
+                    <th scope="col">
+                        Actions
+                    </th>
+                </tr>
+            </form>
+        </thead>
+        <tbody>
+            @foreach ($CardioEntries as $entry)
+            <tr class="align-middle">
+                <th scope="row">{{ $loop->index + 1 }}</th>
+                <td>
+                    <div class="d-flex gap-2" style="height: 100%;">
+                        <iconify-icon style="width: 20px;"
+                            icon="{{ $entry->cardioType ? $entry->cardioType->image : 'fa-solid:question'}}"
+                            style="font-size: 14px;"></iconify-icon>
+                        <div>
+                            {{ $entry->cardioType ? $entry->cardioType->name : 'Unknown' }}
+                        </div>
+                    </div>
+                </td>
+                <td>{{ $entry->formatDuration() }}</td>
+                <td>{{ $entry->distance }}</td>
+                <td>{{ $entry->formatPace() }}</td>
+                <td>{{ $entry->date }}</td>
+                <td>
+                    <div class="d-flex gap-2">
+                        <a href="{{ route('editView', $entry->id) }}" class="btn btn-primary">
+                            <iconify-icon icon="fa-solid:edit" style="font-size: 14px;"></iconify-icon>
+                        </a>
+                        <form action="{{ route('deleteEntry', $entry->id) }}" method="POST"
+                            onsubmit="return confirm('Are you sure you want to delete this entry?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">
+                                <iconify-icon icon="fa-solid:trash" style="font-size: 14px;"></iconify-icon>
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+@endsection
