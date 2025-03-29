@@ -24,7 +24,7 @@ Route::get('/logout', [SessionController::class, 'logout'])->name('logout');
 
 Route::get('/', [MainController::class, 'index'])->middleware('auth')->name('mainView');
 Route::delete('/delete/{cardioEntry}', [MainController::class, 'delete'])->middleware('auth')->name('deleteEntry');
-Route::get('/create', [FormController::class, 'index'])->middleware('auth')->name('createView');
+Route::get('/form', [FormController::class, 'index'])->middleware('auth')->name('createView');
 Route::post('/create', [FormController::class, 'create'])->middleware('auth')->name('createEntry');
 Route::get('/edit/{cardioEntry}', [FormController::class, 'edit'])->middleware('auth')->name('editView');
 Route::put('/edit/{cardioEntry}', [FormController::class, 'update'])->middleware('auth')->name('updateEntry');

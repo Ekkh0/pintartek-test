@@ -67,7 +67,12 @@
                         </div>
                     </div>
                 </td>
-                <td>{{ $entry->formatDuration() }}</td>
+                <td>
+                    <?php $duration = $entry->formatDuration() ?>
+                    {{$duration['hours'] ? str_pad($duration['hours'], 2, '0', STR_PAD_LEFT) . ' :' : '' }}
+                    {{$duration['minutes'] ? str_pad($duration['minutes'], 2, '0', STR_PAD_LEFT) . ' :' : '00 :' }}
+                    {{str_pad($duration['seconds'], 2, '0', STR_PAD_LEFT)}}
+                </td>
                 <td>{{ $entry->distance }}</td>
                 <td>{{ $entry->formatPace() }}</td>
                 <td>{{ $entry->date }}</td>

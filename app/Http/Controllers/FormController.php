@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\CardioEntry;
 use App\Models\CardioType;
+use Psy\Readline\Hoa\Console;
 
 class FormController extends Controller
 {
@@ -16,18 +17,24 @@ class FormController extends Controller
 
     public function create(Request $request){
         $request->validate([
-            'user_id'=>'required|exists:users,id',
             'date'=>'required|date',
-            'type'=>'required|exists:CardioType,id',
-            'duration'=>'required|integer|min:1',
+            'type'=>'required|exists:CardioTypes,id',
+            'hour'=>'nullable|integer|required_without_all:minute,second',
+            'minute'=>'nullable|integer|required_without_all:hour,second',
+            'second'=>'nullable|integer|required_without_all:minute,hour',
             'distance'=>'required|numeric|min:0',
         ]);
 
+        $totalDuration = ($request->hour ?? 0) * 3600 + ($request->minute ?? 0) * 60 + ($request->second ?? 0);
+        if($totalDuration <= 0){
+            return back()->withErrors(['duration' => 'At least 1 second of time is required.'])->withInput();
+        }
+
         $data = [
-            'user_id' => $request->user_id,
-            'date' => $request->date,
-            'type' => $request->type,
-            'duration' => $request->duration,
+            'user_id' => auth()->id(),
+            'date' => date('Y/m/d', strtotime($request->date)),
+            'type_id' => $request->type,
+            'duration' => $totalDuration,
             'distance' => $request->distance,
         ];
 
@@ -35,6 +42,8 @@ class FormController extends Controller
 
         if($cardioEntry){
             return redirect()->route('mainView')->with('message', 'CardioEntry Created Successfully');
+        }else{
+            return response()->json(['message' => 'Failed to Create CardioEntry'], 500);
         }
     }
 
@@ -46,27 +55,32 @@ class FormController extends Controller
 
     public function update(Request $request, CardioEntry $cardioEntry){
         $request->validate([
-            'user_id'=>'required|exists:users,id',
             'date'=>'required|date',
-            'type'=>'required|exists:CardioType,id',
-            'duration'=>'required|integer|min:1',
+            'type'=>'required|exists:CardioTypes,id',
+            'hour'=>'nullable|integer|required_without_all:minute,second',
+            'minute'=>'nullable|integer|required_without_all:hour,second',
+            'second'=>'nullable|integer|required_without_all:minute,hour',
             'distance'=>'required|numeric|min:0',
         ]);
 
+        $totalDuration = ($request->hour ?? 0) * 3600 + ($request->minute ?? 0) * 60 + ($request->second ?? 0);
+        if($totalDuration <= 0){
+            return back()->withErrors(['duration' => 'At least 1 second of time is required.'])->withInput();
+        }
+
         $data = [
-            'user_id' => $request->user_id,
-            'date' => $request->date,
-            'type' => $request->type,
-            'duration' => $request->duration,
+            'date' => date('Y/m/d', strtotime($request->date)),
+            'type_id' => $request->type,
+            'duration' => $totalDuration,
             'distance' => $request->distance,
         ];
 
         $cardioEntry->update($data);
 
-        if(!$cardioEntry){
-            return response()->json(['message' => 'Failed to Update CardioEntry'], 500);
+        if($cardioEntry){
+            return redirect()->route('mainView')->with('message', 'CardioEntry Updated Successfully');
         }else{
-            return response()->json(['message' => 'CardioEntry Updated Successfully', 'data' => $data], 200);
+            return response()->json(['message' => 'Failed to Update CardioEntry'], 500);
         }
     }
 }

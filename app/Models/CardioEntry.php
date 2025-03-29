@@ -28,21 +28,23 @@ class CardioEntry extends Model
         return $this->belongsTo(CardioType::class, 'type_id');
     }
 
-    public function formatDuration(): string
+    public function formatDuration(): array
     {
         $duration = $this->duration;
+        $hours = floor($duration / 3600);
+        $duration %= 3600;
         $minutes = floor($duration / 60);
         $seconds = $duration % 60;
         
-        return sprintf("%d:%02d", $minutes, $seconds);
+        return ['hours' => $hours, 'minutes' => $minutes, 'seconds' => $seconds];
     }
 
     public function formatPace(): string
     {
-        $pace = $this->duration / $this->distance;
+        $pace = ($this->duration/60) / $this->distance;
         $minutes = floor($pace);
         $seconds = round(($pace - $minutes) * 60);
         
-        return sprintf("%d:%02d", $minutes, $seconds);
+        return sprintf("%02d : %02d", $minutes, $seconds);
     }
 }
