@@ -12,7 +12,7 @@
 <div class="card p-3">
     <div class="d-flex align-items-center justify-content-between mb-3">
         <h3 class="m-0">{{ $isEdit ? 'Edit Entry' : 'Create New Entry' }}</h3>
-        <a href="{{ Route('mainView') }}" class="d-flex align-items-center">
+        <a href="{{ Route('logView') }}" class="d-flex align-items-center">
             <iconify-icon icon="fa6-solid:xmark" style="font-size: 30px; color: red;"></iconify-icon>
         </a>
     </div>

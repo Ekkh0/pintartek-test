@@ -41,7 +41,7 @@ class FormController extends Controller
         $cardioEntry = CardioEntry::create($data);
 
         if($cardioEntry){
-            return redirect()->route('mainView')->with('message', 'CardioEntry Created Successfully');
+            return redirect()->route('logView')->with('message', 'CardioEntry Created Successfully');
         }else{
             return response()->json(['message' => 'Failed to Create CardioEntry'], 500);
         }
@@ -78,7 +78,7 @@ class FormController extends Controller
         $cardioEntry->update($data);
 
         if($cardioEntry){
-            return redirect()->route('mainView')->with('message', 'CardioEntry Updated Successfully');
+            return redirect()->route('logView')->with('message', 'CardioEntry Updated Successfully');
         }else{
             return response()->json(['message' => 'Failed to Update CardioEntry'], 500);
         }

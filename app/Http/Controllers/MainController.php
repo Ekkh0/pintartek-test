@@ -1,30 +1,29 @@
 <?php
 
 namespace App\Http\Controllers;
+use Carbon\Carbon;
 
 use Illuminate\Http\Request;
 use App\Models\CardioEntry;
 
 class MainController extends Controller
 {
-    public function index(Request $request){
-        $filter = $request->query('filter');
-
+    public function index(){
+        $daysAgo = Carbon::today()->subDays(7);
         $cardioEntries = CardioEntry::with('cardioType')
         ->where('user_id', auth()->user()->id)
-        ->whereHas('cardioType', function($query) use ($filter) {
-            if ($filter) {
-                $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($filter) . '%']);
-            }
-        })
-        ->get();
+        ->where('date', '>=', $daysAgo)
+        ->orderBy('date', 'desc')
+        ->paginate(5);
 
-        return view('main', ['CardioEntries' => $cardioEntries]);
-    }
+        $duration = $cardioEntries->sum('duration');
+        $hours = floor($duration / 3600);
+        $duration %= 3600;
+        $minutes = floor($duration / 60);
+        $totalDuration = ['hours' => $hours, 'minutes' => $minutes];
 
-    public function delete(CardioEntry $cardioEntry){
-        $cardioEntry->delete();
+        $totalDistance = $cardioEntries->sum('distance');
 
-        return redirect()->back()->with('success', 'CardioEntry Deleted Successfully');
+        return view('main', ['cardioEntries' => $cardioEntries, 'cardioEntriesCount' => $cardioEntries->count(), 'totalDuration' => $totalDuration, 'totalDistance' => $totalDistance]);
     }
 }

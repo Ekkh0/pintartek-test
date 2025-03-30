@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use App\Models\CardioEntry;
 
 class CardioEntriesSeeder extends Seeder
 {
@@ -35,5 +36,6 @@ class CardioEntriesSeeder extends Seeder
             'duration' => 60,
             'distance' => 20.3],
         ]);
+        CardioEntry::factory()->count(50)->create();
     }
 }
