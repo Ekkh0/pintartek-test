@@ -21,38 +21,41 @@
         <thead class="align-middle">
             <form action="{{ route('logView') }}" method="GET">
                 @csrf
+                <input type="hidden" name="sort" id="sort" value="{{ request('sort') }}">
+                <input type="hidden" name="direction" id="direction" value="{{ request('direction') }}">
                 <tr>
-                    <th scope="col">
-                        #
-                    </th>
+                    <th scope="col">#</th>
                     <th scope="col" style="width: 15%;">
                         <div class="d-flex gap-2 align-items-center">
                             Type
-                            <input type="text" name="filter" class="form-control" placeholder="Filter Type"
-                                value="{{ request('filter') }}">
+                            <input type="text" name="filter" class="form-control" placeholder="Filter Type" value="{{ request('filter') }}">
                         </div>
                     </th>
                     <th scope="col">
                         <div class="d-flex align-items-center justify-content-between">
                             Duration
-                            <span class="d-flex">
-                                <iconify-icon icon="fa-solid:arrow-up" style="font-size: 14px;"></iconify-icon>
-                                <iconify-icon icon="fa-solid:arrow-down" style="font-size: 14px;"></iconify-icon>
-                            </span>
+                            <x-sort-button value="duration" />
                         </div>
                     </th>
                     <th scope="col">
-                        Distance (Km)
+                        <div class="d-flex align-items-center justify-content-between">
+                            Distance (Km)
+                            <x-sort-button value="distance" />
+                        </div>
                     </th>
                     <th scope="col">
-                        Pace (Min/Km)
+                        <div class="d-flex align-items-center justify-content-between">
+                            Pace (Min/Km)
+                            <x-sort-button value="pace" />
+                        </div>
                     </th>
                     <th scope="col">
-                        Date
+                        <div class="d-flex align-items-center justify-content-between">
+                            Date
+                            <x-sort-button value="date" />
+                        </div>
                     </th>
-                    <th scope="col">
-                        Actions
-                    </th>
+                    <th scope="col">Actions</th>
                 </tr>
             </form>
         </thead>

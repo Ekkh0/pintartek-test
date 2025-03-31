@@ -9,6 +9,8 @@ class LogController extends Controller
 {
     public function index(Request $request){
         $filter = $request->query('filter');
+        $sort = $request->query('sort', 'date');
+        $sortDirection = $request->query('direction', 'desc');
 
         $cardioEntries = CardioEntry::with('cardioType')
         ->where('user_id', auth()->user()->id)
@@ -17,9 +19,20 @@ class LogController extends Controller
             if ($filter) {
                 $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($filter) . '%']);
             }
-        })
-        ->orderBy('date', 'desc')
-        ->paginate(15);
+        });
+
+        if($sort === 'pace'){
+            # pace is sorted in reverse because the smaller the pace the better
+            $cardioEntries = $cardioEntries->orderByRaw('duration / 60 / distance ' . ($sortDirection=='asc' ? 'desc' : 'asc'));
+        }else{
+            $cardioEntries = $cardioEntries->orderBy($sort, $sortDirection);
+        }
+
+        $cardioEntries = $cardioEntries->paginate(15)->appends([
+            'filter' => $filter,
+            'sort' => $sort,
+            'direction' => $sortDirection,
+        ]);
 
         return view('log', ['cardioEntries' => $cardioEntries]);
     }
