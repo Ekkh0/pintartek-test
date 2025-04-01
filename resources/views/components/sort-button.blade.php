@@ -1,3 +1,4 @@
+{{-- this component have $direction as a fillable variable --}}
 <button 
 type="submit" 
 class="btn btn-link d-flex p-0 text-decoration-none"

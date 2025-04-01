@@ -18,6 +18,7 @@ class DropdownInput extends Component
     public $options;
     public $value;
 
+    # options can be filled with an associative array with keys ['key1' => 'value1'] so it can display text and fill the needed value separately in the component
     public function __construct($id, $title, $name, $options, $value = NULL, $placeholder = '')
     {
         $this->id = $id;

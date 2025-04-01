@@ -14,10 +14,10 @@ class CardioEntry extends Model
 
     protected $fillable = [
         'user_id',
-        'date',
+        'date', # Remember to format date to 'Y/m/d'
         'type_id',
-        'duration',
-        'distance',
+        'duration', # Duration is in seconds
+        'distance', # Distance is in Km
     ];
 
     public function user():BelongsTo{
@@ -28,6 +28,7 @@ class CardioEntry extends Model
         return $this->belongsTo(CardioType::class, 'type_id');
     }
 
+    # Function to get the time that is saved in seconds to be in hour min and secs
     public function formatDuration(): array
     {
         $duration = $this->duration;
@@ -39,6 +40,7 @@ class CardioEntry extends Model
         return ['hours' => $hours, 'minutes' => $minutes, 'seconds' => $seconds];
     }
 
+    # Function to get the pace in string
     public function formatPace(): string
     {
         $pace = ($this->duration/60) / $this->distance;

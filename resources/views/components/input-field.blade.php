@@ -1,3 +1,4 @@
+{{-- remember to check App\Http\View\Components\InputField.php for all the available variables --}}
 <div class="mb-3">
     @if($title)
     <label for="{{ $id }}" class="form-label">{{ $title }}</label>

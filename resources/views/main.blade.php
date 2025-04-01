@@ -20,7 +20,7 @@
         @elseif ($totalDuration['minutes'] > 0)
             {{ $totalDuration['minutes'] }} minutes
         @endif
-        of cardio across {{ $cardioEntriesCount }} activities and traversed across {{ $totalDistance }} Km of distance.
+        of cardio from {{ $cardioEntriesCount == 1 ? $cardioEntriesCount.' activity' : $cardioEntriesCount.' activities'}} and traversed across {{ $totalDistance }} Km of distance.
         <div class="mt-3">
             <h4>This Week's Cardio Activities</h4>
         </div>

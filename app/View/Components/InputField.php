@@ -18,6 +18,7 @@ class InputField extends Component
     public $type;
     public $value;
 
+    # this component need atleast id and name to be used otherwise the rest is already defaulted
     public function __construct($id, $name, $value = NULL, $title = '', $placeholder = '', $type = 'text')
     {
         $this->id = $id;

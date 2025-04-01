@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
             'email' => 'test@example.com',
             'password' => Hash::make('123123123'),
             'dob' => Carbon::parse('2000-01-01'),
-            'gender' => 'male',
+            'gender' => 'Male',
         ]);
     }
 }

@@ -1,3 +1,4 @@
+{{-- remember to check App\Http\View\Components\DropdownInput.php for all the available variables and notes on how to use the component --}}
 <div class="mb-3">
     <label for="{{ $id }}" class="form-label">{{ $title }}</label>
     <div class="input-group">

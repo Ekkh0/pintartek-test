@@ -17,14 +17,17 @@ use App\Http\Controllers\FormController;
 |
 */
 
+# Login & Register and Session
 Route::get('/login', [SessionController::class, 'index'])->name('login');
 Route::get('/register', [SessionController::class, 'register'])->name('register');
 Route::post('sessionLogin', [SessionController::class, 'login'])->name('sessionLogin');
 Route::post('createAccount', [SessionController::class, 'create'])->name('createAccount');
 Route::get('/logout', [SessionController::class, 'logout'])->name('logout');
 
+# Home view
 Route::get('/', [MainController::class, 'index'])->middleware('auth')->name('mainView');
 
+# Everything to do with logs page
 Route::group(['prefix' => 'logs'], function () {
     Route::get('/', [LogController::class, 'index'])->middleware('auth')->name('logView');
     Route::delete('/delete/{cardioEntry}', [LogController::class, 'delete'])->middleware('auth')->name('deleteEntry');

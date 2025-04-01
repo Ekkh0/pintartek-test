@@ -69,7 +69,9 @@
             
         </div>
         @error('duration')
+        <div class="mb-2">
             <small class="text-danger">{{ $message }}</small>
+        </div>
         @enderror
 
         <x-input-field 
