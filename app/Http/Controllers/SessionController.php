@@ -52,7 +52,7 @@ class SessionController extends Controller
         $user = User::create($data);
 
         if($user){
-            return redirect('login')->with(['success'=> 'Berhasil Login']);
+            return redirect('login')->with(['success'=> 'Berhasil Membuat Akun']);
         }else{
             return redirect('register')->withErrors(['wronginfo'=>'Username dan password yang dimasukkan tidak valid']);
         }
@@ -77,7 +77,7 @@ class SessionController extends Controller
         if(Auth::attempt($infologin)){
             return redirect('/')->with(['success'=> 'Berhasil Login']);
         }else{
-            return redirect('login')->withErrors(['wronginfo'=>'Username dan password yang dimasukkan tidak valid']);
+            return redirect('login')->withErrors(['wronginfo'=>'Username dan password yang dimasukkan salah / belum ter registrasi']);
         }
     }
 
